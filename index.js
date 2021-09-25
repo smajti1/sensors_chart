@@ -65,7 +65,7 @@ const config = {
         plugins: {
             title: {
                 display: true,
-                text: 'CPU temp/sec'
+                text: 'CPU temp/sec ' + new Date().toLocaleString('pl')
             }
         },
         scales: {
@@ -90,3 +90,23 @@ const config = {
 
 const myChart = new Chart(document.getElementById('myChart').getContext('2d'), config);
 uploadChartData(myChart);
+
+function download_sensors_chart_as_png(){
+    const download = document.getElementById("download");
+    const src_canvas = document.getElementById("myChart");
+
+    const destination_canvas = document.createElement("canvas");
+    destination_canvas.width = src_canvas.width;
+    destination_canvas.height = src_canvas.height;
+
+    const dest_context = destination_canvas.getContext('2d');
+    dest_context.fillStyle = "white";
+    dest_context.fillRect(0,0,src_canvas.width, src_canvas.height);
+    dest_context.drawImage(src_canvas, 0, 0);
+    destination_canvas.toDataURL();
+
+    const image = destination_canvas.toDataURL("image/png")
+        .replace("image/png", "image/octet-stream");
+    download.setAttribute("href", image);
+
+}

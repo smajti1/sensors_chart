@@ -1,11 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <title>Sensors Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        #header {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
 </head>
 <body>
+<div id="header">
+    <p>Sensors Chart</p>
+    <a id="download" download="sensors_chart.png">
+        <button type="button" onClick="download_sensors_chart_as_png()">Download as png</button>
+    </a>
+</div>
 <div>
     <canvas id="myChart"></canvas>
 </div>
