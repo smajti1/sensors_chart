@@ -10,9 +10,9 @@ Program display line chart containing 4 core cpu temperature
     
     cargo run
 
-next open browser with `index.html` or run
+next open browser with `127.0.0.1:7878` or run `max_time_frames` is optional
 
-    xdg-open './index.html'
+    xdg-open '127.0.0.1:7878/?max_time_frames=100'
 
 Compare `rust` code to `php` code run
 

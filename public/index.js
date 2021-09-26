@@ -1,16 +1,25 @@
 const timer = ms => new Promise(res => setTimeout(res, ms))
 const CPU_WARNING_TEMP = 80;
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const MAX_TIME_FRAMES = urlParams.has('max_time_frames') ? urlParams.get('max_time_frames') : null;
 
 async function uploadChartData(chart) {
-    fetch('http://127.0.0.1:7878')
+    fetch('http://127.0.0.1:7878/sensors_chart_data')
         .then(res => res.json())
         .then(output => {
+            if (MAX_TIME_FRAMES !== null && chart.data.labels.length >= MAX_TIME_FRAMES) {
+                chart.data.labels.shift();
+            }
             if (chart.data.labels.length === 0) {
-                chart.data.labels.push(0);
+                chart.data.labels.push('0sec');
             } else {
-                chart.data.labels.push(chart.data.labels.at(-1) + 1);
+                chart.data.labels.push('' + (parseInt(chart.data.labels.at(-1)) + 1) + 'sec');
             }
             chart.data.datasets.forEach((dataset) => {
+                if (MAX_TIME_FRAMES !== null && dataset.data.length >= MAX_TIME_FRAMES) {
+                    dataset.data.shift();
+                }
                 dataset.data.push(output[dataset.label]);
             });
             chart.update();
@@ -69,11 +78,6 @@ const config = {
             }
         },
         scales: {
-            x: {
-                ticks: {
-                    callback: (value, index, values) => value + 'sec'
-                },
-            },
             y: {
                 type: 'linear',
                 display: true,
